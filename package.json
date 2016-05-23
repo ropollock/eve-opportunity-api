@@ -1,0 +1,38 @@
+{
+  "name": "eve-opportunity-api",
+  "version": "0.0.1",
+  "description": "API for accessing EVE Online market data from an eve-downloader instance",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha test",
+    "compile": "tsc",
+    "prepublish": "typings install"
+  },
+  "keywords": [
+    "EVE",
+    "Online",
+    "API",
+    "Market",
+    "Analysis"
+  ],
+  "author": "Russ Pollock",
+  "license": "MIT",
+  "engines": {
+    "node": "~6.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.4",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.0",
+    "elasticsearch": "^11.0.1",
+    "moment": "^2.13.0",
+    "restify": "^4.0.4",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
+  }
+}

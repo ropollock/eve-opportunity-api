@@ -1,0 +1,10 @@
+{
+  "globalDependencies": {
+    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630",
+    "bunyan": "registry:dt/bunyan#0.0.0+20160412155112",
+    "moment": "registry:dt/moment#2.8.0+20160316155526",
+    "moment-node": "registry:dt/moment-node#2.11.1+20160511043338",
+    "node": "registry:dt/node#6.0.0+20160514165920",
+    "restify": "registry:dt/restify#2.0.0+20160425141054"
+  }
+}
