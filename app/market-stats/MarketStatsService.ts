@@ -1,6 +1,5 @@
-import {ESSearchResult} from "./MarketStatsDAO";
 import {Request} from "restify";
-import {ESSearchQuery} from "../services/RepositoryService";
+import {ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
 import {settings} from "./../config";
 var bodybuilder = require('bodybuilder');
 
