@@ -15,6 +15,7 @@ api.use(restify.bodyParser());
 api.use(restify.queryParser());
 api.use(restify.authorizationParser());
 api.use(restify.fullResponse());
+api.use(restify.gzipResponse());
 
 // Setup routes
 marketStatsRoutes(api);
