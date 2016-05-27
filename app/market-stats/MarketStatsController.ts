@@ -8,7 +8,7 @@ var bodybuilder = require('bodybuilder');
 
 export default class MarketStatsController {
 
-    get(req: restify.Request, res: restify.Response, next: restify.Next) {
+    getById(req: restify.Request, res: restify.Response, next: restify.Next) {
         let query = null;
         try {
             query = MarketStatsService.getRequestToQuery(req);
@@ -42,7 +42,7 @@ export default class MarketStatsController {
         });
     }
 
-    post(req: restify.Request, res: restify.Response, next: restify.Next) {
+    search(req: restify.Request, res: restify.Response, next: restify.Next) {
         let query = null;
         try {
             query = MarketStatsService.searchRequestToQuery(req);
