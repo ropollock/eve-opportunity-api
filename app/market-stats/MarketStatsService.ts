@@ -1,6 +1,7 @@
-import {Request} from "restify";
+import {Request, BadRequestError} from "restify";
 import {ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
 import {settings} from "./../config";
+import * as moment from "moment";
 var bodybuilder = require('bodybuilder');
 
 const MAX_SEARCH_SIZE = 1000;
@@ -48,36 +49,15 @@ export class MarketStatsService {
 
     static searchRequestToQuery(req: Request) : ESSearchQuery {
         let body = new bodybuilder();
-        let itemQueried = false;
 
         // Item matching
-        if(req.params.itemId) {
-            itemQueried = true;
-            body = body.query('term', 'item.id', req.params.itemId);
-        }
-
-        if(req.params.itemName) {
-            itemQueried = true;
-            body = body.query('match', 'item.name', req.params.itemName);
-        }
-
-        if(req.params.itemHref) {
-            itemQueried = true;
-            body = body.query('term', 'item.href', req.params.itemHref);
-        }
-
-        if(!itemQueried) {
-            throw new Error('You must provide an item to search');
-        }
+        body = MarketStatsService.transformItemRequestToQuery(req, body);
 
         // Trade hub matching
-        if(req.params.tradeHubName) {
-            body = body.query('match', 'tradeHub.name', req.params.tradeHubName);
-        }
+        body = MarketStatsService.transformTradeHubRequestToQuery(req, body);
 
-        if(req.params.tradeHubId) {
-            body = body.query('term', 'tradeHub.id', req.params.tradeHubId);
-        }
+        // Date range matching
+        body = MarketStatsService.transformDateRangeRequestToQuery(req, body);
 
         // Paging
         let from = 0;
@@ -108,6 +88,99 @@ export class MarketStatsService {
         query.size = size;
 
         return query;
+    }
+
+    static transformItemRequestToQuery(req: Request, body)  {
+        if(!MarketStatsService.hasQueryFunction(body)) {
+            throw new Error('Missing query function. Expected bodybuilder instance');
+        }
+
+        let itemQueried = false;
+
+        if(req.params.itemId) {
+            itemQueried = true;
+            body = body.query('term', 'item.id', req.params.itemId);
+        }
+
+        if(req.params.itemName) {
+            itemQueried = true;
+            body = body.query('match', 'item.name', req.params.itemName);
+        }
+
+        if(req.params.itemHref) {
+            itemQueried = true;
+            body = body.query('term', 'item.href', req.params.itemHref);
+        }
+
+        if(!itemQueried) {
+            throw new BadRequestError('You must provide an item to search');
+        }
+
+        return body;
+    }
+
+    static transformTradeHubRequestToQuery(req: Request, body) {
+        if(!MarketStatsService.hasQueryFunction(body)) {
+            throw new Error('Missing query function. Expected bodybuilder instance');
+        }
+
+        if(req.params.tradeHubName) {
+            body = body.query('match', 'tradeHub.name', req.params.tradeHubName);
+        }
+
+        if(req.params.tradeHubId) {
+            body = body.query('term', 'tradeHub.id', req.params.tradeHubId);
+        }
+
+        return body;
+    }
+
+    static transformDateRangeRequestToQuery(req: Request, body) {
+        if(!MarketStatsService.hasQueryFunction(body)) {
+            throw new Error('Missing query function. Expected bodybuilder instance');
+        }
+
+        if(req.params.dateRange) {
+            if(req.params.dateRange.to && req.params.dateRange.from) {
+                if(!moment(req.params.dateRange.to).isValid()) {
+                    throw new BadRequestError('Invalid date time for dateRange.to. ISO 8601 standard dates required.');
+                }
+
+                if(!moment(req.params.dateRange.from).isValid()) {
+                    throw new BadRequestError('Invalid date time for dateRange.from. ISO 8601 standard dates required.');
+                }
+
+                let to = moment(req.params.dateRange.to).unix();
+                let from = moment(req.params.dateRange.from).unix();
+
+                body.query('range', 'time', {lte:to, gte:from});
+            }
+            else if(req.params.dateRange.to) {
+                if(!moment(req.params.dateRange.to).isValid()) {
+                    throw new BadRequestError('Invalid date time for dateRange.to. ISO 8601 standard dates required.');
+                }
+
+                let to = moment(req.params.dateRange.to).unix();
+                body.query('range', 'time', {lte:to});
+            }
+            else if(req.params.dateRange.from) {
+                if(!moment(req.params.dateRange.from).isValid()) {
+                    throw new BadRequestError('Invalid date time for dateRange.from. ISO 8601 standard dates required.');
+                }
+
+                let from = moment(req.params.dateRange.from).unix();
+                body.query('range', 'time', {gte:from});
+            }
+            else {
+                throw new BadRequestError('dateRange must include at least a "to" or "from" date time conforming to ISO 8601 standards.');
+            }
+        }
+
+        return body;
+    }
+
+    static hasQueryFunction(obj) : boolean {
+        return typeof obj.query === 'function';
     }
 }
 

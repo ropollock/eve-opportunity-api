@@ -1,6 +1,4 @@
 import * as restify from "restify";
-import {RespositoryService, ESSearchQuery} from "./../services/RepositoryService"
-import {settings} from "./../config";
 import {MarketStatsDAO} from "./MarketStatsDAO";
 import {MarketStatsService} from "./MarketStatsService";
 import * as Promise from "bluebird";
