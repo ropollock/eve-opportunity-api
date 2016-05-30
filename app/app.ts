@@ -2,6 +2,7 @@ import * as restify from "restify";
 import {settings} from "./config";
 import {routes as marketStatsRoutes} from "./market-stats/MarketStatsRoutes";
 import {routes as ohlcRoutes} from "./ohlc/OHLCRoutes";
+import {routes as tradeHubRoutes} from "./trade-hubs/TradeHubsRoutes";
 
 var api = restify.createServer({
     name: settings.name
@@ -21,6 +22,7 @@ api.use(restify.gzipResponse());
 // Setup routes
 marketStatsRoutes(api);
 ohlcRoutes(api);
+tradeHubRoutes(api);
 
 // Start server
 api.listen(settings.port, () => {
