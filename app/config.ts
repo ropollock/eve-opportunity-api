@@ -17,7 +17,7 @@ const esStatsIndex = process.env.ES_STATS_INDEX || 'marketstats';
 
 export var settings: Config = {
     name: 'Eve Opportunity API',
-    version: '0.0.1',
+    version: '0.6.1',
     port: port,
     env: env,
     ES_CLUSTER: esCluster,
