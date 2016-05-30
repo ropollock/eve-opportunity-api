@@ -12,7 +12,7 @@ export default class MarketStatsController {
             query = MarketStatsService.getRequestToQuery(req);
         }
         catch(error) {
-            return next(new restify.BadRequestError({message: error.message}));
+            return next(error);
         }
 
         if(query === null) {
@@ -46,7 +46,7 @@ export default class MarketStatsController {
             query = MarketStatsService.searchRequestToQuery(req);
         }
         catch(error) {
-            return next(new restify.BadRequestError({message: error.message}));
+            return next(error);
         }
 
         if(query === null) {

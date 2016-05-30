@@ -32,6 +32,7 @@ export interface ESSearchQuery {
 
 export interface ESSearchResult {
     hits: any[];
+    aggregations?: any;
     total: number;
     size: number;
     from: number;

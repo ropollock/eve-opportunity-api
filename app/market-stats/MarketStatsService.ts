@@ -119,6 +119,54 @@ export class MarketStatsService {
         return body;
     }
 
+    static transformSingleItemRequestToQuery(req: Request, body)  {
+        if(!MarketStatsService.hasQueryFunction(body)) {
+            throw new Error('Missing query function. Expected bodybuilder instance');
+        }
+
+        let itemQueried = false;
+
+        if(req.params.itemId) {
+            itemQueried = true;
+            body = body.query('term', 'item.id', req.params.itemId);
+        }
+
+        if(req.params.itemHref) {
+            itemQueried = true;
+            body = body.query('term', 'item.href', req.params.itemHref);
+        }
+
+        if(!itemQueried) {
+            throw new BadRequestError('You must provide an item to search');
+        }
+
+        return body;
+    }
+
+    static transformSingleTradeHubRequestToQuery(req: Request, body) {
+        if(!MarketStatsService.hasQueryFunction(body)) {
+            throw new Error('Missing query function. Expected bodybuilder instance');
+        }
+
+        let tradeHubQueried = false;
+        
+        if(req.params.tradeHubName) {
+            tradeHubQueried = true;
+            body = body.query('term', 'tradeHub.name', req.params.tradeHubName);
+        }
+
+        if(req.params.tradeHubId) {
+            tradeHubQueried = true;
+            body = body.query('term', 'tradeHub.regionId', req.params.tradeHubId);
+        }
+
+        if(!tradeHubQueried) {
+            throw new BadRequestError('You must provide a trade hub to search');
+        }
+
+        return body;
+    }
+
     static transformTradeHubRequestToQuery(req: Request, body) {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
@@ -129,7 +177,7 @@ export class MarketStatsService {
         }
 
         if(req.params.tradeHubId) {
-            body = body.query('term', 'tradeHub.id', req.params.tradeHubId);
+            body = body.query('term', 'tradeHub.regionId', req.params.tradeHubId);
         }
 
         return body;
