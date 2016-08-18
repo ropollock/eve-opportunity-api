@@ -51,13 +51,13 @@ export class MarketStatsService {
         let body = new bodybuilder();
 
         // Item matching
-        body = MarketStatsService.transformItemRequestToQuery(req, body);
+        body = MarketStatsService.itemRequestToQuery(req, body);
 
         // Trade hub matching
-        body = MarketStatsService.transformTradeHubRequestToQuery(req, body);
+        body = MarketStatsService.tradeHubRequestToQuery(req, body);
 
         // Date range matching
-        body = MarketStatsService.transformDateRangeRequestToQuery(req, body);
+        body = MarketStatsService.dateRangeRequestToQuery(req, body);
 
         // Paging
         let from = 0;
@@ -90,7 +90,7 @@ export class MarketStatsService {
         return query;
     }
 
-    static transformItemRequestToQuery(req: Request, body)  {
+    static itemRequestToQuery(req: Request, body)  {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
         }
@@ -119,7 +119,7 @@ export class MarketStatsService {
         return body;
     }
 
-    static transformSingleItemRequestToQuery(req: Request, body)  {
+    static singleItemRequestToQuery(req: Request, body)  {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
         }
@@ -143,7 +143,7 @@ export class MarketStatsService {
         return body;
     }
 
-    static transformSingleTradeHubRequestToQuery(req: Request, body) {
+    static singleTradeHubRequestToQuery(req: Request, body) {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
         }
@@ -167,7 +167,7 @@ export class MarketStatsService {
         return body;
     }
 
-    static transformTradeHubRequestToQuery(req: Request, body) {
+    static tradeHubRequestToQuery(req: Request, body) {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
         }
@@ -183,7 +183,7 @@ export class MarketStatsService {
         return body;
     }
 
-    static transformDateRangeRequestToQuery(req: Request, body) {
+    static dateRangeRequestToQuery(req: Request, body) {
         if(!MarketStatsService.hasQueryFunction(body)) {
             throw new Error('Missing query function. Expected bodybuilder instance');
         }

@@ -14,13 +14,13 @@ export class OHLCService {
         let body = new bodybuilder();
 
         // Require item matching
-        body = MarketStatsService.transformSingleItemRequestToQuery(req, body);
+        body = MarketStatsService.singleItemRequestToQuery(req, body);
 
         // Require trade hub matching
-        body = MarketStatsService.transformSingleTradeHubRequestToQuery(req, body);
+        body = MarketStatsService.singleTradeHubRequestToQuery(req, body);
 
         // Date range matching
-        body = MarketStatsService.transformDateRangeRequestToQuery(req, body);
+        body = MarketStatsService.dateRangeRequestToQuery(req, body);
 
         // Determine if OHLC is for buy or sell orders, default to sell order
         if(req.params.buy) {
@@ -36,12 +36,10 @@ export class OHLCService {
         // Sorting
         body = body.sort('time');
 
-        let query: ESSearchQuery = {
+        return {
             index: settings.ES_STATS_INDEX,
             body: body.build('v2')
-        };
-
-        return query;
+        }
     }
 
     static buildOHLCAggregation(body, type: OHLC_TYPES) {
