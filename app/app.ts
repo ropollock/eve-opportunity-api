@@ -26,5 +26,5 @@ tradeHubRoutes(api);
 
 // Start server
 api.listen(settings.port, () => {
-    console.log('INFO: running');
+    console.log('INFO: listening on ' + settings.port);
 });

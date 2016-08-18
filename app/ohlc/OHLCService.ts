@@ -4,8 +4,6 @@ import {MarketStatsService} from "./../market-stats/MarketStatsService";
 import {settings} from "./../config";
 var bodybuilder = require('bodybuilder');
 
-const MAX_SEARCH_SIZE = 1000;
-
 export enum OHLC_TYPES {
     SELL,
     BUY
@@ -29,25 +27,11 @@ export class OHLCService {
             body = OHLCService.buildOHLCAggregation(body, OHLC_TYPES.BUY);
         }
         else {
+            req.params.buy = false;
             body = OHLCService.buildOHLCAggregation(body, OHLC_TYPES.SELL);
         }
 
-        // Paging
-        let from = 0;
-        if(req.params.from) {
-            from = parseInt(req.params.from);
-            body = body.from(from);
-        }
-
-        let size = 500;
-        if(req.params.size) {
-            size = parseInt(req.params.size);
-            if(size > MAX_SEARCH_SIZE) {
-                size = MAX_SEARCH_SIZE;
-            }
-
-            body = body.size(size);
-        }
+        body = body.size(0);
 
         // Sorting
         body = body.sort('time');
@@ -56,9 +40,6 @@ export class OHLCService {
             index: settings.ES_STATS_INDEX,
             body: body.build('v2')
         };
-
-        query.from = from;
-        query.size = size;
 
         return query;
     }
