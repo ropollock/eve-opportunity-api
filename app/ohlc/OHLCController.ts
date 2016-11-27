@@ -21,8 +21,8 @@ export default class OHLCController {
             return MarketStatsDAO.search(query);
         }).then(function(response) {
             try {
-                let ohlcResults = OHLCService.marketStatsOHLCAggregationsToOHLCResults(response.aggregations, req.params.buy ? OHLC_TYPES.BUY : OHLC_TYPES.SELL);
-                res.json(200, {items: ohlcResults, request: req.params});
+                let ohlcResults = OHLCService.OHLCAggregationsToOHLCResults(response.aggregations, req.params.buy ? OHLC_TYPES.BUY : OHLC_TYPES.SELL);
+                res.json(200, {days: ohlcResults, totalDays: ohlcResults.length, request: req.params});
             }
             catch(err) {
                 return next(new InternalServerError({error: err, request: req.params}));
