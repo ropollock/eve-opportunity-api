@@ -2,7 +2,7 @@ import {Request, BadRequestError} from "restify";
 import {ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
 import {MarketStatsService} from "./../market-stats/MarketStatsService";
 import {settings} from "./../config";
-var bodybuilder = require('bodybuilder');
+const bodybuilder = require('bodybuilder');
 
 export enum OHLC_TYPES {
     SELL,
@@ -12,7 +12,6 @@ export enum OHLC_TYPES {
 export class OHLCService {
     static ohlcRequestToQuery(req: Request) : ESSearchQuery {
         let body = new bodybuilder();
-
         // Require item matching
         body = MarketStatsService.singleItemRequestToQuery(req, body);
         // Require trade hub matching
@@ -65,12 +64,11 @@ export class OHLCService {
 
     static OHLCAggregationsToOHLCResults(agg, type: OHLC_TYPES) : OHLCResult[] {
         let dayHistogram = agg.agg_date_histogram_time;
-
         if(typeof dayHistogram === 'undefined') {
             throw new Error('Invalid aggregation result missing day histogram.');
         }
 
-        return dayHistogram.buckets.map((day) => { return OHLCService.OHLCResultFromDayAggregation(day, type)});
+        return dayHistogram.buckets.map((day) => {return OHLCService.OHLCResultFromDayAggregation(day, type)});
     }
 
     static OHLCResultFromDayAggregation(dayAgg, type: OHLC_TYPES) : OHLCResult {
@@ -86,8 +84,8 @@ export class OHLCService {
                 upper: stats.std_deviation_bounds.upper
             };
             let avgVolume = dayAgg["agg_avg_sellOrderStats.volume"].value;
-
-            let priceInterval = OHLCService.openAndCloseFromAggregation(OHLCService.filterEmptyAggregations(dayAgg.agg_date_histogram_time.buckets), type);
+            let priceInterval = OHLCService.openAndCloseFromAggregation(
+                OHLCService.filterEmptyAggregations(dayAgg.agg_date_histogram_time.buckets), type);
 
             return <OHLCResult> {
                 time: time,
@@ -113,8 +111,8 @@ export class OHLCService {
                 upper: stats.std_deviation_bounds.upper
             };
             let avgVolume = dayAgg["agg_avg_buyOrderStats.volume"].value;
-
-            let priceInterval = OHLCService.openAndCloseFromAggregation(OHLCService.filterEmptyAggregations(dayAgg.agg_date_histogram_time.buckets), type);
+            let priceInterval = OHLCService.openAndCloseFromAggregation(
+                OHLCService.filterEmptyAggregations(dayAgg.agg_date_histogram_time.buckets), type);
 
             return <OHLCResult> {
                 time: time,
