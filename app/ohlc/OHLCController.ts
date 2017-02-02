@@ -1,5 +1,5 @@
 import {Request, Response, Next, InternalServerError} from "restify";
-import {MarketStatsDAO} from "./../market-stats/MarketStatsDAO";
+import {search} from "../market-stats/MarketStats";
 import {OHLCService, OHLC_TYPES} from "./OHLCService";
 import * as Promise from "bluebird";
 
@@ -18,7 +18,7 @@ export default class OHLCController {
         }
 
         return Promise.try(function() {
-            return MarketStatsDAO.search(query);
+            return search(query);
         }).then(function(response) {
             try {
                 let ohlcResults = OHLCService.OHLCAggregationsToOHLCResults(response.aggregations, req.params.buy ? OHLC_TYPES.BUY : OHLC_TYPES.SELL);

@@ -1,10 +1,10 @@
 import * as restify from "restify";
 import {settings} from "./config";
-import {routes as marketStatsRoutes} from "./market-stats/MarketStatsRoutes";
+import {routes as marketStatsRoutes} from "./market-stats/Routes";
 import {routes as ohlcRoutes} from "./ohlc/OHLCRoutes";
 import {routes as tradeHubRoutes} from "./trade-hubs/TradeHubsRoutes";
 
-var api = restify.createServer({
+let api = restify.createServer({
     name: settings.name
 });
 

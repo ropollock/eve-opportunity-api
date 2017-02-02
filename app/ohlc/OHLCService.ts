@@ -1,7 +1,7 @@
 import {Request, BadRequestError} from "restify";
 import {ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
-import {MarketStatsService} from "./../market-stats/MarketStatsService";
-import {settings} from "./../config";
+import * as MarketStatsService from "../market-stats/Service";
+import {settings} from "../config";
 const bodybuilder = require('bodybuilder');
 
 export enum OHLC_TYPES {
