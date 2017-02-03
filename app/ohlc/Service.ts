@@ -1,5 +1,5 @@
 import {Request} from "restify";
-import {ESSearchQuery} from "../services/RepositoryService";
+import {ESSearchQuery} from "../repository/elastic-search";
 import * as MarketStatsService from "../market-stats/Service";
 import {settings} from "../config";
 const bodybuilder = require('bodybuilder');

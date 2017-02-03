@@ -1,5 +1,5 @@
 import {Request, BadRequestError} from "restify";
-import {ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
+import {ESSearchQuery, ESSearchResult} from "../repository/elastic-search";
 import {settings} from "../config";
 import * as moment from "moment";
 let bodybuilder = require('bodybuilder');

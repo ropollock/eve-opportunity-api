@@ -1,7 +1,7 @@
-import {RespositoryService, ESSearchQuery, ESSearchResult} from "../services/RepositoryService";
+import {search as esSearch, ESSearchQuery, ESSearchResult} from "../repository/elastic-search";
 
 export function search(query: ESSearchQuery) : Promise<ESSearchResult> {
-    return RespositoryService.search(query).then((response) => {
+    return esSearch(query).then((response) => {
         // @TODO log search
         let result = <ESSearchResult> {
             hits: response.hits.hits,
