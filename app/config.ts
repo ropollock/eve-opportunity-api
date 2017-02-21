@@ -7,15 +7,15 @@ export interface Config {
     ES_STATS_INDEX: string;
 }
 
-var path = require('path');
-var rootPath = path.normalize(__dirname + '/..');
+let path = require('path');
+let rootPath = path.normalize(__dirname + '/..');
 
-var env = process.env.APP_CONTEXT || 'dev';
-var port = process.env.APP_PORT || 3000;
+let env = process.env.APP_CONTEXT || 'dev';
+let port = process.env.APP_PORT || 3000;
 const esCluster = process.env.ES_CLUSTER || 'localhost:9200';
 const esStatsIndex = process.env.ES_STATS_INDEX || 'marketstats';
 
-export var settings: Config = {
+export let settings: Config = {
     name: 'Eve Opportunity API',
     version: '0.6.1',
     port: port,
