@@ -105,7 +105,7 @@ export function OHLCResultFromDayAggregation(dayAgg, type: OHLC_TYPES) : OHLCRes
 
 export function openAndCloseFromAggregation(hourlyAgg: ESHourlyAggregation[], type: OHLC_TYPES) : PriceInterval {
     if(hourlyAgg.length === 0) {
-        throw new Error('Unable to extract open and close prices from empty aggregation results.');
+        return <PriceInterval> {open: null, close: null};
     }
 
     hourlyAgg.sort((a,b) => {return a.key - b.key;});
